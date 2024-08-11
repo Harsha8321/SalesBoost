@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #c9d6ff;
+            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 15px; /* Adjusted border-radius */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            width: 96%; /* Adjusted width */
+            max-width: 1720px; /* Adjusted max-width */
+            min-height: 94vh; /* Adjusted height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 40px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: -400px; /* Adjust this value to move the content up or down */
+        }
+
+        .instruction-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: left;
+            width: 50%; /* Matches the width of the drop-area */
+        }
+
+        .drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            width: 50%;
+            padding: 40px;
+            text-align: center;
+            font-size: 18px;
+            color: #aaa;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .drop-area.dragover {
+            background-color: #f0f0f0;
+        }
+
+        .file-name {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+            display: none;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #512da8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #6a3fbf;
+        }
+
+        .predict-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .predict-btn:hover {
+            background-color: #218838;
+        }
+
+        .spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #512da8;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Chatbot Styles */
+        .chatbot-icon {
+            position: fixed;
+            bottom: 18px;
+            right: 35px;
+            width: 120px; /* Increased width */
+            height: 120px; /* Increased height */
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px; /* Increased width */
+            height: 400px; /* Increased height */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .chatbot-header {
+            background-color: #512da8;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move; /* Make header cursor movable */
+        }
+
+        .chatbot-header .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+
+        .chatbot-input button {
+            padding: 10px;
+            background-color: #512da8;
+            color: #fff;
+            border: none;
+        }
+        .center-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>SalesBoost Dashboard</h1>
+            <p>Upload your dataset to start analyzing your sales data</p>
+        </div><br><br><br>
+        <div class="dashboard-content">
+            <p class="instruction-text"><b>Please drop your dataset here:</b></p>
+            <div class="drop-area" id="drop-area">
+                Drag & Drop your CSV file here or click to upload
+                <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" id="file-input" name="file" hidden>
+                </form>
+                <div class="spinner" id="spinner"></div>
+            </div>
+            <div class="file-name" id="file-name"><br><br></div><br>
+            <button class="submit-btn" onclick="submitForm()">Get Insights</button>
+
+            <form action="{{ url_for('predict') }}" method="get">
+                <br><b><p class="center-text">OR</p></b><br>
+                <button type="submit" class="predict-btn">Predict Sales For New Instance</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chatbot Icon -->
+    <img src="{{ url_for('static', filename='ChatbotPic.gif') }}" alt="Chatbot Icon" class="chatbot-icon" id="chatbot-icon">
+
+    <!-- Chatbot -->
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-header" id="chatbot-header">
+            Chatbot
+            <button class="close-btn" id="chatbot-close-btn">&times;</button>
+        </div>
+        <div class="chatbot-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" placeholder="Type a message...">
+            <button>Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Toggle chatbot visibility
+        const chatbotIcon = document.getElementById('chatbot-icon');
+        const chatbot = document.getElementById('chatbot');
+        const chatbotCloseBtn = document.getElementById('chatbot-close-btn');
+
+        chatbotIcon.addEventListener('click', () => {
+            chatbot.style.display = 'flex';
+        });
+
+        chatbotCloseBtn.addEventListener('click', () => {
+            chatbot.style.display = 'none';
+        });
+
+        // Make the chatbot draggable
+        dragElement(document.getElementById("chatbot"));
+
+        function dragElement(element) {
+            const header = document.getElementById("chatbot-header");
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (header) {
+                // If present, the header is where you move the DIV from
+                header.onmousedown = dragMouseDown;
+            } else {
+                // Otherwise, move the DIV from anywhere inside the DIV
+                element.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // Get the mouse cursor position at startup
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // Call a function whenever the cursor moves
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // Calculate the new cursor position
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // Set the element's new position
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // Stop moving when mouse button is released
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        // File upload functionality
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+        const spinner = document.getElementById('spinner');
+
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.classList.add('dragover');
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.classList.remove('dragover');
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        dropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            const files = fileInput.files;
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            const file = files[0];
+            if (file.type === 'text/csv') {
+                spinner.style.display = 'block';
+                setTimeout(() => {
+                    spinner.style.display = 'none';
+                    fileNameDisplay.style.display = 'block';
+                    fileNameDisplay.textContent = `Uploaded file:  ${file.name}`;
+                }, 2000); // Mocking upload time
+            } else {
+                alert('Error: Please upload a valid CSV file.');
+            }
+        }
+
+        function submitForm() {
+            const form = document.getElementById('upload-form');
+            form.submit();
+        }
+
+        // Simple chatbot interaction (mockup)
+        const chatbotMessages = document.querySelector('.chatbot-messages');
+        const chatbotInput = document.querySelector('.chatbot-input input');
+        const chatbotButton = document.querySelector('.chatbot-input button');
+
+        chatbotButton.addEventListener('click', () => {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                const userMessage = document.createElement('div');
+                userMessage.textContent = message;
+                userMessage.style.textAlign = 'right';
+                chatbotMessages.appendChild(userMessage);
+
+                // Mock response
+                const botMessage = document.createElement('div');
+                botMessage.textContent = 'Bot: ' + message;
+                chatbotMessages.appendChild(botMessage);
+
+                chatbotInput.value = '';
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

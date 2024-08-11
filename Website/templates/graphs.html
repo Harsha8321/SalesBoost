@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs | Sales Prediction Tool</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #c9d6ff;
+            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            width: 96%;
+            max-width: 1720px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .dashboard-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .graph {
+            width: 100%;
+            max-width: 750px; /* Ensure graphs are not too wide */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: #f7f7f7;
+            margin-bottom: 50px; /* Ensure space between graphs */
+            text-align: center;
+        }
+
+        .graph img {
+            width: 100%;
+            display: block;
+        }
+
+        .graph-title {
+            padding: 10px;
+            font-size: 16px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <br>
+            <h1>INSIGHTS</h1>
+            <p>Below are the visual insights generated from your uploaded dataset</p><br><br>
+        </div>
+        <div class="dashboard-content">
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_1.png') }}" alt="Plot 1">
+                <div class="graph-title"><b>Graph 1</b></div>
+            </div>
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_2.png') }}" alt="Plot 2">
+                <div class="graph-title"><b>Graph 2</b></div>
+            </div>
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_3.png') }}" alt="Plot 3">
+                <div class="graph-title"><b>Graph 3</b></div>
+            </div>
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_4.png') }}" alt="Plot 4">
+                <div class="graph-title"><b>Graph 4</b></div>
+            </div>
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_5.png') }}" alt="Plot 5">
+                <div class="graph-title"><b>Graph 5</b></div>
+            </div>
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_6.png') }}" alt="Plot 6">
+                <div class="graph-title"><b>Graph 6</b></div>
+            </div>
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_7.png') }}" alt="Plot 7">
+                <div class="graph-title"><b>Graph 7</b></div>
+            </div>
+            <div class="graph">
+                <img src="{{ url_for('static', filename='images/plot_8.png') }}" alt="Plot 8">
+                <div class="graph-title"><b>Graph 8</b></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
